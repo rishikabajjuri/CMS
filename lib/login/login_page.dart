@@ -7,6 +7,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final color2 = Colors.redAccent;
     final color1 = Colors.red.withOpacity(0.2);
+    print(MediaQuery.of(context).size.height);
     return Scaffold(
 //      resizeToAvoidBottomInset: false,
       body: ListView(
@@ -15,7 +16,7 @@ class LoginPage extends StatelessWidget {
             children: <Widget>[
               ClipPath(
                 child: Container(
-                  height: 300,
+                  height: MediaQuery.of(context).size.height/2,
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
                           begin: Alignment.topCenter,
@@ -26,7 +27,7 @@ class LoginPage extends StatelessWidget {
               ),
               ClipPath(
                 child: Container(
-                  height: 330,
+                  height: MediaQuery.of(context).size.height/2+30,
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
                           begin: Alignment.topCenter,
