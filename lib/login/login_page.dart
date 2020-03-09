@@ -1,3 +1,4 @@
+import 'package:complaint_managament_system/home/home_page.dart';
 import 'package:complaint_managament_system/login/login_verification.dart';
 import 'package:complaint_managament_system/widgets/custom_button.dart';
 import 'package:complaint_managament_system/widgets/top_bottom_clipper.dart';
@@ -9,7 +10,6 @@ import 'package:toast/toast.dart';
 class LoginPage extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
   final controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final color2 = Colors.redAccent;
@@ -97,6 +97,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 CustomButton(
                   onTap: () {
+                    HomePage.openAndRemoveUntil(context);
                     if (!formKey.currentState.validate()) return;
                     final _auth = FirebaseAuth.instance;
                     print(controller.text);

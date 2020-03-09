@@ -1,3 +1,4 @@
+import 'package:complaint_managament_system/home/home_page.dart';
 import 'package:complaint_managament_system/widgets/custom_button.dart';
 import 'package:complaint_managament_system/widgets/otpFields.dart';
 import 'package:complaint_managament_system/widgets/top_bottom_clipper.dart';
@@ -105,6 +106,7 @@ class _LoginVerificationState extends State<LoginVerification> {
                   height: 40,
                 ),
                 CustomButton(
+                  onTap: () => HomePage.openAndRemoveUntil(context),
                   next: 'SUBMIT',
                 )
               ],
