@@ -1,9 +1,14 @@
+import 'package:complaint_managament_system/Register/register_page.dart';
+import 'package:complaint_managament_system/data/local/shared_prefs.dart';
 import 'package:complaint_managament_system/home/home_page.dart';
 import 'package:complaint_managament_system/widgets/custom_button.dart';
+import 'package:complaint_managament_system/widgets/loading_widget.dart';
 import 'package:complaint_managament_system/widgets/otpFields.dart';
 import 'package:complaint_managament_system/widgets/top_bottom_clipper.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:toast/toast.dart';
 
 class LoginVerification extends StatefulWidget {
   final String verificationCode;
@@ -106,7 +111,39 @@ class _LoginVerificationState extends State<LoginVerification> {
                   height: 40,
                 ),
                 CustomButton(
-                  onTap: () => HomePage.openAndRemoveUntil(context),
+                  onTap: () async {
+                    if (!formKey.currentState.validate()) return;
+                    final auth = FirebaseAuth.instance;
+                    String smsCode = '';
+                    controllers.forEach((f) {
+                      smsCode += f.text;
+                    });
+                    final credential = PhoneAuthProvider.getCredential(
+                        verificationId: widget.verificationCode, smsCode: smsCode);
+                    try {
+                      LoadingWidget.showLoadingDialog(context);
+                      final authRes = await auth.signInWithCredential(credential);
+                      Prefs.setUID(authRes.user.uid);
+                      final snap = await FirebaseDatabase.instance
+                          .reference()
+                          .child('users')
+                          .once();
+                      final response = snap.value as Map;
+                      Navigator.pop(context);
+                      final uid = authRes.user.uid;
+                      if (response == null || !response.containsKey(uid)) {
+                        Register.open(context, widget.mobile);
+                      } else {
+                        Prefs.setName(response[uid]['name']);
+                        Prefs.setMob(response[uid]['mobile']);
+                        HomePage.openAndRemoveUntil(context);
+                      }
+                    } catch (e) {
+                      Toast.show(e.toString(), context, duration: 3);
+                      Navigator.pop(context);
+                      print(e);
+                    };
+                  },
                   next: 'SUBMIT',
                 )
               ],

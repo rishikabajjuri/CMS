@@ -1,6 +1,8 @@
+import 'package:complaint_managament_system/Register/register_page.dart';
 import 'package:complaint_managament_system/home/home_page.dart';
 import 'package:complaint_managament_system/login/login_verification.dart';
 import 'package:complaint_managament_system/widgets/custom_button.dart';
+import 'package:complaint_managament_system/widgets/loading_widget.dart';
 import 'package:complaint_managament_system/widgets/top_bottom_clipper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ import 'package:toast/toast.dart';
 class LoginPage extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
   final controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final color2 = Colors.redAccent;
@@ -25,10 +28,7 @@ class LoginPage extends StatelessWidget {
               children: <Widget>[
                 ClipPath(
                   child: Container(
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height / 2,
+                    height: MediaQuery.of(context).size.height / 2,
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
                             begin: Alignment.topCenter,
@@ -39,18 +39,15 @@ class LoginPage extends StatelessWidget {
                 ),
                 ClipPath(
                   child: Container(
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height / 2 + 30,
+                    height: MediaQuery.of(context).size.height / 2 + 30,
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                              color1.withOpacity(0.3),
-                              color2.withOpacity(0.3)
-                            ])),
+                          color1.withOpacity(0.3),
+                          color2.withOpacity(0.3)
+                        ])),
                   ),
                   clipper: BottomClipper(),
                 ),
@@ -71,10 +68,7 @@ class LoginPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: TextFormField(
                     controller: controller,
-                    validator: (value) =>
-                    value
-                        .trim()
-                        .length == 10
+                    validator: (value) => value.trim().length == 10
                         ? null
                         : 'Please enter a 10 digit mobile number',
                     keyboardType: TextInputType.number,
@@ -97,14 +91,15 @@ class LoginPage extends StatelessWidget {
                 ),
                 CustomButton(
                   onTap: () {
-                    HomePage.openAndRemoveUntil(context);
                     if (!formKey.currentState.validate()) return;
+                    LoadingWidget.showLoadingDialog(context);
                     final _auth = FirebaseAuth.instance;
                     print(controller.text);
                     _auth.verifyPhoneNumber(
                         phoneNumber: '+91${controller.text}',
                         timeout: Duration(seconds: 10),
-                        verificationCompleted: (AuthCredential credentials) async {
+                        verificationCompleted:
+                            (AuthCredential credentials) async {
                           print('verificationCompleted');
                         },
                         verificationFailed: (ex) {
@@ -115,7 +110,8 @@ class LoginPage extends StatelessWidget {
                           print('VerificationCode');
                           print(verificationCode);
                           Navigator.pop(context);
-                          LoginVerification.open(context, verificationCode, controller.text);
+                          LoginVerification.open(
+                              context, verificationCode, controller.text);
                         },
                         codeAutoRetrievalTimeout: (ds) {
                           print(ds);

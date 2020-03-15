@@ -11,6 +11,7 @@ class ChooseDepartment extends StatefulWidget {
 }
 
 class _ChooseDepartmentState extends State<ChooseDepartment> {
+  final depSec = TextEditingController();
   List<Map<String, String>> departments = [
     {'name': 'RAILWAYS', 'image': Images.railways},
     {'name': 'HOTELS', 'image': Images.hotels},
@@ -38,7 +39,7 @@ class _ChooseDepartmentState extends State<ChooseDepartment> {
               padding: const EdgeInsets.all(4.0),
               child: InkWell(
                 onTap: () {
-                  AddComplaint.open(context);
+                  AddComplaint.open(context,departments[index]['name']);
                 },
                 child: GridTile(
                   child: Card(

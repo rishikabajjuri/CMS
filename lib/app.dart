@@ -1,3 +1,5 @@
+import 'package:complaint_managament_system/data/local/shared_prefs.dart';
+import 'package:complaint_managament_system/home/home_page.dart';
 import 'package:complaint_managament_system/login/login_page.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +9,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  Widget launchingWidget = Container();
+  @override
+  void initState() {
+    super.initState();
+    Prefs.getUID().then((value) {
+      print(value);
+      if(value == null)
+        launchingWidget = LoginPage();
+      else
+        launchingWidget = HomePage();
+      setState(() {
+
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final customColor = Colors.redAccent.withOpacity(0.8);
@@ -24,6 +41,6 @@ class _MyAppState extends State<MyApp> {
               backgroundColor: customColor,
             )),
         debugShowCheckedModeBanner: false,
-        home: LoginPage());
+        home: launchingWidget);
   }
 }
