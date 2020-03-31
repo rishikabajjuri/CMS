@@ -1,6 +1,6 @@
 import 'package:complaint_managament_system/Register/register_page.dart';
 import 'package:complaint_managament_system/data/local/shared_prefs.dart';
-import 'package:complaint_managament_system/home/home_page.dart';
+import 'package:complaint_managament_system/home/user_home_page.dart';
 import 'package:complaint_managament_system/widgets/custom_button.dart';
 import 'package:complaint_managament_system/widgets/loading_widget.dart';
 import 'package:complaint_managament_system/widgets/otpFields.dart';
@@ -10,34 +10,34 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
 
-class LoginVerification extends StatefulWidget {
+class UserLoginVerification extends StatefulWidget {
   final String verificationCode;
   final String mobile;
 
-  const LoginVerification({Key key, this.verificationCode, this.mobile})
+  const UserLoginVerification({Key key, this.verificationCode, this.mobile})
       : super(key: key);
 
   static open(context, String verificationCode, String mobile) =>
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => LoginVerification(
+              builder: (context) => UserLoginVerification(
                     verificationCode: verificationCode,
                     mobile: mobile,
                   )));
 
   @override
-  _LoginVerificationState createState() => _LoginVerificationState(verificationCode, mobile);
+  _UserLoginVerificationState createState() => _UserLoginVerificationState(verificationCode, mobile);
 }
 
-class _LoginVerificationState extends State<LoginVerification> {
+class _UserLoginVerificationState extends State<UserLoginVerification> {
   List<TextEditingController> controllers = [];
 
   final formKey = GlobalKey<FormState>();
   final String verificationCode;
   final String mobile;
 
-  _LoginVerificationState(this.verificationCode, this.mobile);
+  _UserLoginVerificationState(this.verificationCode, this.mobile);
 
   Widget build(BuildContext context) {
     final color2 = Colors.redAccent;
@@ -136,7 +136,7 @@ class _LoginVerificationState extends State<LoginVerification> {
                       } else {
                         Prefs.setName(response[uid]['name']);
                         Prefs.setMob(response[uid]['mobile']);
-                        HomePage.openAndRemoveUntil(context);
+                        UserHomePage.openAndRemoveUntil(context);
                       }
                     } catch (e) {
                       Toast.show(e.toString(), context, duration: 3);

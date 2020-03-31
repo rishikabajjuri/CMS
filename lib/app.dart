@@ -1,6 +1,8 @@
 import 'package:complaint_managament_system/data/local/shared_prefs.dart';
-import 'package:complaint_managament_system/home/home_page.dart';
-import 'package:complaint_managament_system/login/login_page.dart';
+import 'package:complaint_managament_system/home/admin_home_page.dart';
+import 'package:complaint_managament_system/home/user_home_page.dart';
+import 'package:complaint_managament_system/login/user_login_page.dart';
+import 'package:complaint_managament_system/onboarding_screen/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatefulWidget {
@@ -16,9 +18,9 @@ class _MyAppState extends State<MyApp> {
     Prefs.getUID().then((value) {
       print(value);
       if(value == null)
-        launchingWidget = LoginPage();
+        launchingWidget = OnBoarding();
       else
-        launchingWidget = HomePage();
+        launchingWidget = AdminHomePage();
       setState(() {
 
       });

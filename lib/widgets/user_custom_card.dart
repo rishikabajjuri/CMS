@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class CustomCard extends StatelessWidget {
+class UserCustomCard extends StatelessWidget {
   final Map complaint;
   final String date;
 
-  const CustomCard({Key key, this.complaint, this.date}) : super(key: key);
+  const UserCustomCard({Key key, this.complaint, this.date}) : super(key: key);
 
 
 

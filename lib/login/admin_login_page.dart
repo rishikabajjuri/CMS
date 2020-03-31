@@ -1,6 +1,8 @@
 import 'package:complaint_managament_system/Register/register_page.dart';
-import 'package:complaint_managament_system/home/home_page.dart';
-import 'package:complaint_managament_system/login/login_verification.dart';
+import 'package:complaint_managament_system/data/local/shared_prefs.dart';
+import 'package:complaint_managament_system/home/admin_home_page.dart';
+import 'package:complaint_managament_system/home/user_home_page.dart';
+import 'package:complaint_managament_system/login/user_login_verification.dart';
 import 'package:complaint_managament_system/widgets/custom_button.dart';
 import 'package:complaint_managament_system/widgets/loading_widget.dart';
 import 'package:complaint_managament_system/widgets/top_bottom_clipper.dart';
@@ -9,16 +11,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
 
-class LoginPage extends StatelessWidget {
+class AdminLoginPage extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
-  final controller = TextEditingController();
+  final emailCtrl = TextEditingController();
+  final passwordCtrl = TextEditingController();
+
+  static openReplacement(context) => Navigator.pushReplacement(
+      context, MaterialPageRoute(builder: (context) => AdminLoginPage()));
 
   @override
   Widget build(BuildContext context) {
     final color2 = Colors.redAccent;
     final color1 = Colors.red.withOpacity(0.2);
     return Scaffold(
-//      resizeToAvoidBottomInset: false,
       body: Form(
         key: formKey,
         child: ListView(
@@ -28,7 +33,7 @@ class LoginPage extends StatelessWidget {
               children: <Widget>[
                 ClipPath(
                   child: Container(
-                    height: MediaQuery.of(context).size.height / 2,
+                    height: MediaQuery.of(context).size.height / 2.2,
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
                             begin: Alignment.topCenter,
@@ -39,7 +44,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 ClipPath(
                   child: Container(
-                    height: MediaQuery.of(context).size.height / 2 + 30,
+                    height: MediaQuery.of(context).size.height / 2 + 5,
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
                             begin: Alignment.topCenter,
@@ -58,7 +63,7 @@ class LoginPage extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(
-                      top: 20, bottom: 50, left: 20, right: 20),
+                      top: 20, bottom: 30, left: 20, right: 20),
                   child: Text(
                     'Welcome.',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
@@ -67,56 +72,62 @@ class LoginPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: TextFormField(
-                    controller: controller,
-                    validator: (value) => value.trim().length == 10
-                        ? null
-                        : 'Please enter a 10 digit mobile number',
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      WhitelistingTextInputFormatter.digitsOnly
-                    ],
+                    controller: emailCtrl,
+                    validator: (value) => value.trim().length == 0
+                        ? 'Please enter your email'
+                        : null,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                         prefixIcon: Icon(
-                          Icons.phone_android,
+                          Icons.email,
                           size: 20,
                           color: Colors.grey.shade800,
                         ),
                         labelStyle: TextStyle(
                             color: Colors.grey.shade800, fontSize: 16),
-                        labelText: 'Phone number'),
+                        labelText: 'Email'),
                   ),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: TextFormField(
+                    controller: passwordCtrl,
+                    validator: (value) => value.trim().length == 0
+                        ? 'Please enter your password' //12346
+                        : null,
+                    obscureText: true,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.lock,
+                          size: 20,
+                          color: Colors.grey.shade800,
+                        ),
+                        labelStyle: TextStyle(
+                            color: Colors.grey.shade800, fontSize: 16),
+                        labelText: 'Password'),
+                  ),
+                ),
+                SizedBox(
+                  height: 35,
                 ),
                 CustomButton(
-                  onTap: () {
+                  onTap: () async {
                     if (!formKey.currentState.validate()) return;
                     LoadingWidget.showLoadingDialog(context);
-                    final _auth = FirebaseAuth.instance;
-                    print(controller.text);
-                    _auth.verifyPhoneNumber(
-                        phoneNumber: '+91${controller.text}',
-                        timeout: Duration(seconds: 10),
-                        verificationCompleted:
-                            (AuthCredential credentials) async {
-                          print('verificationCompleted');
-                        },
-                        verificationFailed: (ex) {
-                          print(ex.message);
-                          Toast.show(ex.message, context, duration: 3);
-                        },
-                        codeSent: (verificationCode, [force]) {
-                          print('VerificationCode');
-                          print(verificationCode);
-                          Navigator.pop(context);
-                          LoginVerification.open(
-                              context, verificationCode, controller.text);
-                        },
-                        codeAutoRetrievalTimeout: (ds) {
-                          print(ds);
-                          print('Timeout');
-                        });
+                    try {
+                      final _auth = FirebaseAuth.instance;
+                      var result = await _auth.signInWithEmailAndPassword(
+                          email: emailCtrl.text, password: passwordCtrl.text);
+                      await Prefs.setUID(result.user.uid);
+                      AdminHomePage.openAndRemoveUntil(context);
+                      print(result.user.email);
+                    } catch (e) {
+                      print(e);
+                    }
                   },
                   next: 'CONTINUE',
                 )

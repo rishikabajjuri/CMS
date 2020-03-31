@@ -1,24 +1,28 @@
 import 'package:complaint_managament_system/complaint_details/choose_dep.dart';
 import 'package:complaint_managament_system/data/local/shared_prefs.dart';
-import 'package:complaint_managament_system/widgets/customCard.dart';
+import 'package:complaint_managament_system/login/user_login_page.dart';
+import 'package:complaint_managament_system/onboarding_screen/onboarding_screen.dart';
+import 'package:complaint_managament_system/widgets/user_custom_card.dart';
 import 'package:complaint_managament_system/widgets/loading_widget.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class HomePage extends StatefulWidget {
+class UserHomePage extends StatefulWidget {
   final Map departments;
 
-  const HomePage({Key key, this.departments}) : super(key: key);
+  const UserHomePage({Key key, this.departments}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _UserHomePageState createState() => _UserHomePageState();
 
-  static openAndRemoveUntil(context) => Navigator.pushAndRemoveUntil(context,
-      MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
+  static openAndRemoveUntil(context) =>
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) => UserHomePage()), (
+              route) => false);
 }
 
-class _HomePageState extends State<HomePage> {
+class _UserHomePageState extends State<UserHomePage> {
   int index = 0;
   Future<DataSnapshot> future;
   String uid = '';
@@ -26,7 +30,6 @@ class _HomePageState extends State<HomePage> {
 
   Future<DataSnapshot> getDetails() async {
     uid = await Prefs.getUID();
-    print(uid);
     var response = await FirebaseDatabase.instance
         .reference()
         .child('users')
@@ -58,13 +61,38 @@ class _HomePageState extends State<HomePage> {
               preferredSize: Size(double.infinity, 100),
               child: Container(
                 padding: EdgeInsets.only(top: 40, bottom: 10),
-                color: Theme.of(context).primaryColor.withOpacity(0.8),
+                color: Theme
+                    .of(context)
+                    .primaryColor
+                    .withOpacity(0.8),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Row(
                     children: <Widget>[
                       IconButton(
-                        icon: Icon(Icons.border_bottom),
+                        icon: Icon(Icons.power_settings_new, color: Colors.white,),
+                        onPressed: () {
+                          showDialog(context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('Are you sure you want to log out?'),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    onPressed: () {
+                                      Prefs.logout();
+                                      Navigator.pop(context);
+                                      return OnBoarding.openReplacement(context);
+                                    },
+                                    child: Text('Yes'),
+                                  ),
+                                  FlatButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('No'),
+                                  )
+                                ],
+                              ));
+                        },
                       ),
                       Flexible(
                         child: Card(
@@ -152,9 +180,9 @@ class _HomePageState extends State<HomePage> {
       return Flexible(
           child: Center(
               child: Text(
-        'No Complaints!',
-        style: TextStyle(fontSize: 20),
-      )));
+                'No Complaints!',
+                style: TextStyle(fontSize: 20),
+              )));
 
     return Flexible(
         child: ListView.builder(
@@ -164,13 +192,10 @@ class _HomePageState extends State<HomePage> {
               var complaint;
               date = filterData.keys.toList()[i];
               complaint = filterData[date];
-//              print(date);
-              print(complaint['status']);
-              print(status[index]);
 
 
               if (complaint['status'] == status[index]) {
-                return CustomCard(
+                return UserCustomCard(
                   complaint: complaint,
                   date: date,
                 );

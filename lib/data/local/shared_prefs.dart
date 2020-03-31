@@ -4,6 +4,7 @@ class Prefs {
   static const departmentName = 'departmentName';
   static const userName = 'userName';
   static const mobileNumber = 'mobileNumber';
+//  static const emailId = 'email';
   static const userId = 'userId';
 
   static Future setDepartmentName(String deptName) async {
@@ -26,6 +27,17 @@ class Prefs {
     return prefs.getString(userId);
   }
 
+//  static Future setEmailId(String email) async {
+//    SharedPreferences prefs = await SharedPreferences.getInstance();
+//    return prefs.setString(emailId, email);
+//  }
+//
+//  static Future getEmailId() async {
+//    SharedPreferences prefs = await SharedPreferences.getInstance();
+//    return prefs.get(emailId);
+//
+//  }
+
   static Future setName(String name) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString(userName, name);
@@ -46,7 +58,7 @@ class Prefs {
     return prefs.getString(mobileNumber);
   }
 
-  static Future clear() async {
+  static Future logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.clear();
   }

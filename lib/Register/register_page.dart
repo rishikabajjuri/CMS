@@ -1,5 +1,5 @@
 import 'package:complaint_managament_system/data/local/shared_prefs.dart';
-import 'package:complaint_managament_system/home/home_page.dart';
+import 'package:complaint_managament_system/home/user_home_page.dart';
 import 'package:complaint_managament_system/widgets/custom_button.dart';
 import 'package:complaint_managament_system/widgets/top_bottom_clipper.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -113,7 +113,7 @@ class Register extends StatelessWidget {
                       });
                       Prefs.setName(nameCtrl.text);
                       Prefs.setMob(mobile);
-                      HomePage.openAndRemoveUntil(context);
+                      UserHomePage.openAndRemoveUntil(context);
                       try {} catch (e) {
                         Toast.show(e.toString(), context, duration: 3);
                       }

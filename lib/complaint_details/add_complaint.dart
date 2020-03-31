@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:complaint_managament_system/data/local/shared_prefs.dart';
-import 'package:complaint_managament_system/home/home_page.dart';
+import 'package:complaint_managament_system/home/user_home_page.dart';
 import 'package:complaint_managament_system/widgets/complaint_image.dart';
 import 'package:complaint_managament_system/widgets/loading_widget.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -180,7 +180,7 @@ class _AddComplaintState extends State<AddComplaint> {
               'status': 'pending',
               'id': id,
             });
-            HomePage.openAndRemoveUntil(context);
+            UserHomePage.openAndRemoveUntil(context);
           } catch (e) {
             print(e);
             Navigator.pop(context);
