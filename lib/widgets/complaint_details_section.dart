@@ -6,9 +6,13 @@ import 'package:flutter/material.dart';
 
 class ComplaintDetailsSection extends StatefulWidget {
   final Map complaint;
+  final String date;
+  final String mobile;
+  final String name;
+  final String email;
 
 
-  const ComplaintDetailsSection({Key key, this.complaint}) : super(key: key);
+  const ComplaintDetailsSection({Key key, this.complaint, this.date, this.mobile, this.name, this.email}) : super(key: key);
 
   @override
   _ComplaintDetailsSectionState createState() =>
@@ -18,13 +22,9 @@ class ComplaintDetailsSection extends StatefulWidget {
 class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
   Future future;
   String uid = '';
-//  String mobile = '';
-//  String email = '';
 
   Future<DataSnapshot> getDetails() async {
     uid = await Prefs.getUID();
-//    mobile = await Prefs.getMob();
-//    email = await Prefs.getEmailId();
     var response = await FirebaseDatabase.instance
         .reference()
         .child('users')
@@ -97,7 +97,7 @@ class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
                             Icon(Icons.phone, size: 25,),
                             Column(
                               children: <Widget>[
-//                                Text(widget.complaint['deptName']),
+                                Text('+91{$widget.mobile}'),
                               ],
                             )
                           ],

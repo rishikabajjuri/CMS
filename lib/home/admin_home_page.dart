@@ -177,7 +177,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
   _getCard(data) {
     print(data['users'].length);
-    print(index);
+//    print(index);
 //    if (filterData.length == 0)
 //      return Flexible(
 //          child: Center(
@@ -195,15 +195,23 @@ class _AdminHomePageState extends State<AdminHomePage> {
                   physics: ScrollPhysics(),
                   itemCount: data['users'][userId]['complaints'].length,
                   itemBuilder: (context, j) {
+                    var mobile = data['users'][userId]['mobile'];
+                    var name = data['users'][userId]['name'];
+                    var email = data['users'][userId]['email'];
+                    print(mobile);
+                    print(name);
+                    print(email);
                     var date =
                         data['users'][userId]['complaints'].keys.toList()[j];
                     var complaint = data['users'][userId]['complaints'][date];
-
                     print(complaint['status']);
                     if (complaint['status'] == status[index]) {
                       return AdminCustomCard(
                         complaint: complaint,
                         date: date,
+                        mobile: mobile,
+                        name: name,
+                        email: email,
                       );
                     }
                     return Container();

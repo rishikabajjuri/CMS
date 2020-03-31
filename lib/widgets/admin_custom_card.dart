@@ -5,6 +5,9 @@ import 'package:intl/intl.dart';
 class AdminCustomCard extends StatelessWidget {
   final Map complaint;
   final String date;
+  final String mobile;
+  final String name;
+  final String email;
 
   static final Map<String, Map<String, dynamic>> status = {
     'pending': {'value': 'Open', 'color': Colors.red},
@@ -12,9 +15,9 @@ class AdminCustomCard extends StatelessWidget {
     'NA': {'value': '', 'color': null},
   };
 
-  const AdminCustomCard({Key key, this.complaint, this.date}) : super(key: key);
-
-
+  const AdminCustomCard(
+      {Key key, this.complaint, this.date, this.mobile, this.name, this.email})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,8 @@ class AdminCustomCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: InkWell(
-        onTap: () => ComplaintDetails.open(context, complaint,date),
+        onTap: () => ComplaintDetails.open(
+            context, complaint, date, mobile, name, email),
         child: Container(
           height: 145,
           color: Theme.of(context).primaryColor.withOpacity(0.15),
@@ -60,7 +64,9 @@ class AdminCustomCard extends StatelessWidget {
                   Divider(
                     color: Colors.black54,
                   ),
-                  SizedBox(height: 3,),
+                  SizedBox(
+                    height: 3,
+                  ),
                   RichText(
                     text: TextSpan(
                         style: TextStyle(

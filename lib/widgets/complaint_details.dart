@@ -7,16 +7,24 @@ import 'package:flutter/material.dart';
 
 class ComplaintDetails extends StatefulWidget {
   final Map complaint;
-  final Map date;
+  final String date;
+  final String mobile;
+  final String name;
+  final String email;
 
+  const ComplaintDetails(
+      {Key key, this.complaint, this.date, this.mobile, this.name, this.email})
+      : super(key: key);
 
-  const ComplaintDetails({Key key, this.complaint, this.date}) : super(key: key);
-
-  static open(context, complaint, date) => Navigator.push(
+  static open(context, complaint, date, mobile, name, email) => Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => ComplaintDetails(
-                complaint: complaint,date: date,
+                complaint: complaint,
+                date: date,
+                mobile: mobile,
+                name: name,
+                email: email,
               )));
 
   @override
@@ -46,17 +54,20 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text('Complaint Details'),
-        centerTitle: true,
-      ),
-      body: Container(
-        color: Colors.transparent,
-//        child: ComplaintDetailsSection(
-//          complaint: widget.complaint,
-//        ),
-      )
-    );
+        appBar: AppBar(
+          elevation: 0,
+          title: Text('Complaint Details'),
+          centerTitle: true,
+        ),
+        body: Container(
+          color: Colors.transparent,
+          child: ComplaintDetailsSection(
+            complaint: widget.complaint,
+            date: widget.date,
+            mobile: widget.mobile,
+            email: widget.email,
+            name: widget.name,
+          ),
+        ));
   }
 }
