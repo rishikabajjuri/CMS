@@ -13,9 +13,11 @@ class ComplaintDetailsSection extends StatefulWidget {
   final String mobile;
   final String name;
   final String email;
+  final String userId;
+
 
   const ComplaintDetailsSection(
-      {Key key, this.complaint, this.date, this.mobile, this.name, this.email})
+      {Key key, this.complaint, this.date, this.mobile, this.name, this.email, this.userId})
       : super(key: key);
 
   @override
@@ -37,6 +39,7 @@ class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
 
   Future getImage() async {
     uid = await Prefs.getUID();
+    print('getImage = $uid');
     var imageResponse = await FirebaseStorage.instance
         .ref()
         .child(uid)

@@ -8,6 +8,7 @@ class AdminCustomCard extends StatelessWidget {
   final String mobile;
   final String name;
   final String email;
+  final String userId;
 
   static final Map<String, Map<String, dynamic>> status = {
     'pending': {'value': 'In Progress', 'color': Colors.deepOrangeAccent},
@@ -16,7 +17,7 @@ class AdminCustomCard extends StatelessWidget {
   };
 
   const AdminCustomCard(
-      {Key key, this.complaint, this.date, this.mobile, this.name, this.email})
+      {Key key, this.complaint, this.date, this.mobile, this.name, this.email, this.userId})
       : super(key: key);
 
   @override
@@ -26,7 +27,7 @@ class AdminCustomCard extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: InkWell(
         onTap: () => ComplaintDetails.open(
-            context, complaint, date, mobile, name, email),
+            context, complaint, date, mobile, name, email, userId),
         child: Container(
           height: 145,
           color: Theme.of(context).primaryColor.withOpacity(0.15),

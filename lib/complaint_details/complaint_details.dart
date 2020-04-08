@@ -12,12 +12,13 @@ class ComplaintDetails extends StatefulWidget {
   final String mobile;
   final String name;
   final String email;
+  final String userId;
 
   const ComplaintDetails(
-      {Key key, this.complaint, this.date, this.mobile, this.name, this.email})
+      {Key key, this.complaint, this.date, this.mobile, this.name, this.email, this.userId})
       : super(key: key);
 
-  static open(context, complaint, date, mobile, name, email) => Navigator.push(
+  static open(context, complaint, date, mobile, name, email, userId) => Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => ComplaintDetails(
@@ -26,6 +27,7 @@ class ComplaintDetails extends StatefulWidget {
                 mobile: mobile,
                 name: name,
                 email: email,
+            userId: userId,
               )));
 
   @override
@@ -64,6 +66,7 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
             mobile: widget.mobile,
             email: widget.email,
             name: widget.name,
+            userId: widget.userId,
           ),
         ));
   }

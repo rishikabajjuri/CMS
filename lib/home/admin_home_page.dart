@@ -197,8 +197,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
                     var date =
                         data['users'][userId]['complaints'].keys.toList()[j];
                     var complaint = data['users'][userId]['complaints'][date];
-                    print(complaint);
-                    print(complaint['status']);
+//                    print(complaint);
+//                    print(complaint['status']);
                     if (complaint['status'] == status[index]) {
                       return AdminCustomCard(
                         complaint: complaint,
@@ -206,6 +206,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         mobile: mobile,
                         name: name,
                         email: email,
+                        userId: userId,
                       );
                     }
                     return Container();
