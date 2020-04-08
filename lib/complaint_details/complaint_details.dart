@@ -50,7 +50,7 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                   FirebaseDatabase.instance
                       .reference()
                       .child('users')
-                      .child(await Prefs.getUID())
+                      .child(widget.userId)
                       .child(widget.complaint['status'])
                       .set('completed');
                   AdminHomePage.openAndRemoveUntil(context);
