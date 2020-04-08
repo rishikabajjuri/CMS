@@ -15,9 +15,14 @@ class ComplaintDetailsSection extends StatefulWidget {
   final String email;
   final String userId;
 
-
   const ComplaintDetailsSection(
-      {Key key, this.complaint, this.date, this.mobile, this.name, this.email, this.userId})
+      {Key key,
+      this.complaint,
+      this.date,
+      this.mobile,
+      this.name,
+      this.email,
+      this.userId})
       : super(key: key);
 
   @override
@@ -26,320 +31,279 @@ class ComplaintDetailsSection extends StatefulWidget {
 }
 
 class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
-  Future future;
   Future imageFuture;
-  String uid = '';
-
-  Future<DataSnapshot> getDetails() async {
-    uid = await Prefs.getUID();
-    var response =
-        await FirebaseDatabase.instance.reference().child(uid).once();
-    return response;
-  }
-
-  Future getImage() async {
-    uid = await Prefs.getUID();
-    print('getImage = $uid');
-    var imageResponse = await FirebaseStorage.instance
-        .ref()
-        .child(uid)
-        .child('complaint_image')
-        .child(widget.date)
-        .getDownloadURL();
-    return imageResponse;
-  }
 
   @override
   void initState() {
     super.initState();
-    future = getDetails();
-    imageFuture = getImage();
+    imageFuture = FirebaseStorage.instance
+        .ref()
+        .child(widget.userId)
+        .child('complaint_image')
+        .child(widget.date)
+        .getDownloadURL();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(uid);
     return ListView(
       children: <Widget>[
-        FutureBuilder(
-          future: future,
-          builder: (context, snap) {
-            if (snap.connectionState == ConnectionState.done) {
-              return Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 10),
-                    child: Card(
-                      elevation: 5,
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8, bottom: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+        Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              child: Card(
+                elevation: 5,
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8, bottom: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 15, left: 14, bottom: 8),
+                        child: Text(
+                          AdminCustomCard.status[widget.complaint['status']]
+                              ['value'],
+                          style: TextStyle(
+                              color: AdminCustomCard
+                                  .status[widget.complaint['status']]['color'],
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Divider(height: 15, color: Colors.black),
+                      SizedBox(
+                        height: 3,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
                           children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 15, left: 14, bottom: 8),
-                              child: Text(
-                                AdminCustomCard
-                                        .status[widget.complaint['status']]
-                                    ['value'],
-                                style: TextStyle(
-                                    color: AdminCustomCard
-                                            .status[widget.complaint['status']]
-                                        ['color'],
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
-                              ),
+                            Icon(
+                              Icons.person,
+                              size: 30,
                             ),
-                            Divider(height: 15, color: Colors.black),
-                            SizedBox(
-                              height: 3,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.person,
-                                    size: 30,
-                                  ),
-                                  SizedBox(width: 15),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        'Name',
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Text(widget.name,
-                                          style: TextStyle(fontSize: 15)),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Divider(height: 15, color: Colors.black),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.phone,
-                                    size: 30,
-                                  ),
-                                  SizedBox(width: 10),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        'Contact Info',
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Text('+91 ${widget.mobile}',
-                                          style: TextStyle(fontSize: 15)),
-                                    ],
-                                  ),
-                                  SizedBox(width: 15),
-                                  OutlineButton(
-                                    onPressed: () {},
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: Text(
-                                      'CALL',
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColor
-                                              .withOpacity(0.8)),
-                                    ),
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context)
-                                            .primaryColor
-                                            .withOpacity(0.8)),
-                                  ),
-                                  SizedBox(width: 5),
-                                  OutlineButton(
-                                    onPressed: () {},
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: Text(
-                                      'SMS',
-                                      style: TextStyle(color: Colors.black54),
-                                    ),
-                                    borderSide:
-                                        BorderSide(color: Colors.black54),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Divider(height: 15, color: Colors.black),
-                            SizedBox(
-                              height: 3,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.email,
-                                    size: 30,
-                                  ),
-                                  SizedBox(width: 10),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        'Email',
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Text(widget.email,
-                                          style: TextStyle(fontSize: 15)),
-                                    ],
-                                  ),
-                                  SizedBox(width: 85),
-                                  OutlineButton(
-                                    onPressed: () {},
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: Text(
-                                      'EMAIL',
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColor
-                                              .withOpacity(0.8)),
-                                    ),
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context)
-                                            .primaryColor
-                                            .withOpacity(0.8)),
-                                  ),
-                                ],
-                              ),
+                            SizedBox(width: 15),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Name',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                Text(widget.name,
+                                    style: TextStyle(fontSize: 15)),
+                              ],
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    child: Card(
-                      elevation: 5,
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8, bottom: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      Divider(height: 15, color: Colors.black),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 15, left: 14, bottom: 8),
+                            Icon(
+                              Icons.phone,
+                              size: 30,
+                            ),
+                            SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Contact Info',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                Text('+91 ${widget.mobile}',
+                                    style: TextStyle(fontSize: 15)),
+                              ],
+                            ),
+                            SizedBox(width: 15),
+                            OutlineButton(
+                              onPressed: () {},
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
                               child: Text(
-                                widget.complaint['deptName'],
+                                'CALL',
                                 style: TextStyle(
-                                    fontSize: 28, fontWeight: FontWeight.w600),
+                                    color: Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(0.8)),
                               ),
+                              borderSide: BorderSide(
+                                  color: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.8)),
                             ),
-                            Divider(height: 15, color: Colors.black),
-                            SizedBox(
-                              height: 3,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.title,
-                                    size: 30,
-                                  ),
-                                  SizedBox(width: 15),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        'Title',
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Text(widget.complaint['title'],
-                                          style: TextStyle(fontSize: 15)),
-                                    ],
-                                  ),
-                                ],
+                            SizedBox(width: 5),
+                            OutlineButton(
+                              onPressed: () {},
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Text(
+                                'SMS',
+                                style: TextStyle(color: Colors.black54),
                               ),
+                              borderSide: BorderSide(color: Colors.black54),
+                            )
+                          ],
+                        ),
+                      ),
+                      Divider(height: 15, color: Colors.black),
+                      SizedBox(
+                        height: 3,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Icon(
+                              Icons.email,
+                              size: 30,
                             ),
-                            Divider(height: 15, color: Colors.black),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.description,
-                                    size: 30,
-                                  ),
-                                  SizedBox(width: 15),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        'Description',
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Text(widget.complaint['description'],
-                                          style: TextStyle(fontSize: 15)),
-                                    ],
-                                  ),
-                                ],
+                            SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Email',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                Text(widget.email,
+                                    style: TextStyle(fontSize: 15)),
+                              ],
+                            ),
+                            SizedBox(width: 85),
+                            OutlineButton(
+                              onPressed: () {},
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Text(
+                                'EMAIL',
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(0.8)),
                               ),
+                              borderSide: BorderSide(
+                                  color: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.8)),
                             ),
                           ],
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              );
-            }
-            return LoadingWidget();
-          },
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              child: Card(
+                elevation: 5,
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8, bottom: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 15, left: 14, bottom: 8),
+                        child: Text(
+                          widget.complaint['deptName'],
+                          style: TextStyle(
+                              fontSize: 28, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      Divider(height: 15, color: Colors.black),
+                      SizedBox(
+                        height: 3,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.title,
+                              size: 30,
+                            ),
+                            SizedBox(width: 15),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Title',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                Text(widget.complaint['title'],
+                                    style: TextStyle(fontSize: 15)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Divider(height: 15, color: Colors.black),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.description,
+                              size: 30,
+                            ),
+                            SizedBox(width: 15),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Description',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                Text(widget.complaint['description'],
+                                    style: TextStyle(fontSize: 15)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
         FutureBuilder(
           future: imageFuture,
