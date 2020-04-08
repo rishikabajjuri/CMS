@@ -35,16 +35,22 @@ class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
     return response;
   }
 
-  @override
-  void initState() {
-    super.initState();
-    future = getDetails();
-    imageFuture = FirebaseStorage.instance
+  Future getImage() async {
+    uid = await Prefs.getUID();
+    var imageResponse = await FirebaseStorage.instance
         .ref()
         .child(uid)
         .child('complaint_image')
         .child(widget.date)
         .getDownloadURL();
+    return imageResponse;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    future = getDetails();
+    imageFuture = getImage();
   }
 
   @override
