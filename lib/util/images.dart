@@ -9,5 +9,5 @@ class Images {
   static const mobilepay = 'assets/images/mobilepay-22.png';
   static const banking = 'assets/images/banking.png';
   static const roads = 'assets/images/roads.png';
-
+  static const rightArrow='assets/images/right_arrow.png';
 }

@@ -124,15 +124,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 ),
               ),
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                ChooseDepartment.open(context);
-              },
-              child: Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
-            ),
             body: Column(
               children: <Widget>[
                 DefaultTabController(
@@ -190,6 +181,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
             itemCount: data['users'].length,
             itemBuilder: (context, i) {
               var userId = data['users'].keys.toList()[i];
+              print(userId);
               return ListView.builder(
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
@@ -198,12 +190,14 @@ class _AdminHomePageState extends State<AdminHomePage> {
                     var mobile = data['users'][userId]['mobile'];
                     var name = data['users'][userId]['name'];
                     var email = data['users'][userId]['email'];
-                    print(mobile);
-                    print(name);
-                    print(email);
+//                    print(data['users'][userId]['complaints'].length);
+//                    print(mobile);
+//                    print(name);
+//                    print(email);
                     var date =
                         data['users'][userId]['complaints'].keys.toList()[j];
                     var complaint = data['users'][userId]['complaints'][date];
+                    print(complaint);
                     print(complaint['status']);
                     if (complaint['status'] == status[index]) {
                       return AdminCustomCard(

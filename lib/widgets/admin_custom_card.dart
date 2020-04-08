@@ -1,4 +1,4 @@
-import 'package:complaint_managament_system/widgets/complaint_details.dart';
+import 'package:complaint_managament_system/complaint_details/complaint_details.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -10,8 +10,8 @@ class AdminCustomCard extends StatelessWidget {
   final String email;
 
   static final Map<String, Map<String, dynamic>> status = {
-    'pending': {'value': 'Open', 'color': Colors.red},
-    'completed': {'value': 'Closed', 'color': Colors.green},
+    'pending': {'value': 'In Progress', 'color': Colors.deepOrangeAccent},
+    'completed': {'value': 'Completed', 'color': Colors.green},
     'NA': {'value': '', 'color': null},
   };
 
