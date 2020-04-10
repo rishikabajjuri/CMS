@@ -3,6 +3,7 @@ import 'package:complaint_managament_system/data/local/shared_prefs.dart';
 import 'package:complaint_managament_system/home/admin_home_page.dart';
 import 'package:complaint_managament_system/widgets/custom_dismissible.dart';
 import 'package:complaint_managament_system/widgets/loading_widget.dart';
+import 'package:complaint_managament_system/widgets/user_custom_card.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -52,22 +53,46 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
         ),
         bottomSheet: widget.complaint['status'] == 'pending'
             ? CustomDismissible(
-                onDismiss: (value) async {
-                  LoadingWidget.showLoadingDialog(context);
-                  FirebaseDatabase.instance
-                      .reference()
-                      .child('users')
-                      .child(widget.userId)
-                      .child('complaints')
-                      .child(widget.date)
-                      .child('status')
-                      .set('completed');
-                  print(widget.userId);
-                  print(widget.complaint['status']);
-                  AdminHomePage.openAndRemoveUntil(context);
-                  return false;
-                },
-              )
+              onDismiss: (value) async {
+                var completeDate = DateTime.now().toString();
+                completeDate =
+                    completeDate.substring(0, completeDate.indexOf('.'));
+                LoadingWidget.showLoadingDialog(context);
+                FirebaseDatabase.instance
+                    .reference()
+                    .child('users')
+                    .child(widget.userId)
+                    .child('complaints')
+                    .child(widget.date)
+                    .child('status')
+                    .set('completed');
+                FirebaseDatabase.instance
+                    .reference()
+                    .child('users')
+                    .child(widget.userId)
+                    .child('complaints')
+                    .child(widget.date)
+                    .child('completeDate')
+                    .set(completeDate);
+                AdminHomePage.openAndRemoveUntil(context);
+                return false;
+//                      .child('status')
+//                      .set('completed');
+
+//                  FirebaseDatabase.instance
+//                      .reference()
+//                      .child('users')
+//                      .child(widget.userId)
+//                      .child('complaints')
+//                      .child(widget.date)
+//                      .child('status')
+//                      .set('completed');
+//                  print(widget.userId);
+//                  print(widget.complaint['status']);
+//                  AdminHomePage.openAndRemoveUntil(context);
+//                  return false;
+              },
+            )
             : Container(height: 1, width: 1),
         body: Container(
           color: Colors.grey.shade50,

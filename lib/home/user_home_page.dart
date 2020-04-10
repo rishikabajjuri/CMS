@@ -16,10 +16,10 @@ class UserHomePage extends StatefulWidget {
   @override
   _UserHomePageState createState() => _UserHomePageState();
 
-  static openAndRemoveUntil(context) =>
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (context) => UserHomePage()), (
-              route) => false);
+  static openAndRemoveUntil(context) => Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => UserHomePage()),
+      (route) => false);
 }
 
 class _UserHomePageState extends State<UserHomePage> {
@@ -35,12 +35,11 @@ class _UserHomePageState extends State<UserHomePage> {
         .child('users')
         .child(uid)
         .once();
-    if(response.value.keys.toList().contains('complaints'))
+    if (response.value.keys.toList().contains('complaints'))
       complaints = response.value['complaints'];
     else
-      complaints={};
+      complaints = {};
     print(uid);
-//    complaints = response.value['complaints'];
     filterData = complaints;
     return response;
   }
@@ -66,37 +65,40 @@ class _UserHomePageState extends State<UserHomePage> {
               preferredSize: Size(double.infinity, 100),
               child: Container(
                 padding: EdgeInsets.only(top: 40, bottom: 10),
-                color: Theme
-                    .of(context)
-                    .primaryColor
-                    .withOpacity(0.8),
+                color: Theme.of(context).primaryColor.withOpacity(0.8),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Row(
                     children: <Widget>[
                       IconButton(
-                        icon: Icon(Icons.power_settings_new, color: Colors.white,),
+                        icon: Icon(
+                          Icons.power_settings_new,
+                          color: Colors.white,
+                        ),
                         onPressed: () {
-                          showDialog(context: context,
+                          showDialog(
+                              context: context,
                               builder: (context) => AlertDialog(
-                                title: Text('Are you sure you want to log out?'),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    onPressed: () {
-                                      Prefs.logout();
-                                      Navigator.pop(context);
-                                      return OnBoarding.openReplacement(context);
-                                    },
-                                    child: Text('Yes'),
-                                  ),
-                                  FlatButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text('No'),
-                                  )
-                                ],
-                              ));
+                                    title: Text(
+                                        'Are you sure you want to log out?'),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        onPressed: () async {
+                                          await Prefs.logout();
+                                          Navigator.pop(context);
+                                          return OnBoarding.openReplacement(
+                                              context);
+                                        },
+                                        child: Text('Yes'),
+                                      ),
+                                      FlatButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text('No'),
+                                      )
+                                    ],
+                                  ));
                         },
                       ),
                       Flexible(
@@ -185,9 +187,9 @@ class _UserHomePageState extends State<UserHomePage> {
       return Flexible(
           child: Center(
               child: Text(
-                'No Complaints!',
-                style: TextStyle(fontSize: 20),
-              )));
+        'No Complaints!',
+        style: TextStyle(fontSize: 20),
+      )));
 
     return Flexible(
         child: ListView.builder(
@@ -198,7 +200,6 @@ class _UserHomePageState extends State<UserHomePage> {
               date = filterData.keys.toList()[i];
               print(date);
               complaint = filterData[date];
-
 
               if (complaint['status'] == status[index]) {
                 return UserCustomCard(

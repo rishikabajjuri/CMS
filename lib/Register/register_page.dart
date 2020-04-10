@@ -113,6 +113,7 @@ class Register extends StatelessWidget {
                       });
                       Prefs.setName(nameCtrl.text);
                       Prefs.setMob(mobile);
+                      Prefs.setRole('user');
                       UserHomePage.openAndRemoveUntil(context);
                       try {} catch (e) {
                         Toast.show(e.toString(), context, duration: 3);

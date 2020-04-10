@@ -74,8 +74,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                         'Are you sure you want to log out?'),
                                     actions: <Widget>[
                                       FlatButton(
-                                        onPressed: () {
-                                          Prefs.logout();
+                                        onPressed: () async {
+                                          await Prefs.logout();
                                           Navigator.pop(context);
                                           return OnBoarding.openReplacement(
                                               context);

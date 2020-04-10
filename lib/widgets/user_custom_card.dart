@@ -4,10 +4,12 @@ import 'package:intl/intl.dart';
 class UserCustomCard extends StatelessWidget {
   final Map complaint;
   final String date;
+  final String completeDate;
+  final double size;
 
-  const UserCustomCard({Key key, this.complaint, this.date}) : super(key: key);
-
-
+  const UserCustomCard(
+      {Key key, this.complaint, this.date, this.completeDate, this.size})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class UserCustomCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(
-        height: 145,
+        height: size,
         color: Theme.of(context).primaryColor.withOpacity(0.15),
         child: Align(
           alignment: Alignment.topLeft,
@@ -51,7 +53,9 @@ class UserCustomCard extends StatelessWidget {
                 Divider(
                   color: Colors.black54,
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 3,
+                ),
                 RichText(
                   text: TextSpan(
                       style: TextStyle(
@@ -77,11 +81,52 @@ class UserCustomCard extends StatelessWidget {
                             style: TextStyle(fontWeight: FontWeight.w600))
                       ]),
                 ),
+                SizedBox(height: 7),
+                complaint['status'] == 'completed'
+                    ? Column(
+                        children: <Widget>[
+                          RichText(
+                            text: TextSpan(
+                                style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Nunito_Sans'),
+                                children: [
+                                  TextSpan(
+                                    text: 'Closed on ',
+                                  ),
+                                  TextSpan(
+                                    text: dateFormat.format(DateTime.parse(
+                                      complaint['completeDate'],
+                                    )),
+                                  )
+                                ]),
+                          ),
+                          SizedBox(height: 5),
+                        ],
+                      )
+                    : Container(
+                        color: Colors.orange,
+                      ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class CloseBoxSize extends StatelessWidget {
+  final double size; //145
+
+  const CloseBoxSize({Key key, this.size}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return UserCustomCard(
+      size: 162,
     );
   }
 }

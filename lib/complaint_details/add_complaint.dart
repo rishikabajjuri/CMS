@@ -157,6 +157,8 @@ class _AddComplaintState extends State<AddComplaint> {
           final uid = await Prefs.getUID();
           var currentDate = DateTime.now().toString();
           currentDate = currentDate.substring(0, currentDate.indexOf('.'));
+          var completeDate = DateTime.now().toString();
+          completeDate = completeDate.substring(0, completeDate.indexOf('.'));
           try {
             var id = FirebaseDatabase.instance.reference().push().key;
             if (id.contains('-')) id = id.replaceFirst('-', '');
@@ -182,6 +184,7 @@ class _AddComplaintState extends State<AddComplaint> {
               'description': descCtrl.text,
               'status': 'pending',
               'id': id,
+              'completeDate' :completeDate
             });
             UserHomePage.openAndRemoveUntil(context);
           } catch (e) {

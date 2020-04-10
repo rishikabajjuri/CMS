@@ -25,8 +25,10 @@ class _MyAppState extends State<MyApp> {
       }
     });
     Prefs.getRole().then((role) {
-      if (role == 'user')
+      if (role == 'user') {
         launchingWidget = UserHomePage();
+        Prefs.logout();
+      }
        else
         launchingWidget = AdminHomePage();
       setState(() {});
