@@ -35,8 +35,12 @@ class _UserHomePageState extends State<UserHomePage> {
         .child('users')
         .child(uid)
         .once();
-    print('uid user = $uid');
-    complaints = response.value['complaints'];
+    if(response.value.keys.toList().contains('complaints'))
+      complaints = response.value['complaints'];
+    else
+      complaints={};
+    print(uid);
+//    complaints = response.value['complaints'];
     filterData = complaints;
     return response;
   }
@@ -192,6 +196,7 @@ class _UserHomePageState extends State<UserHomePage> {
               var date;
               var complaint;
               date = filterData.keys.toList()[i];
+              print(date);
               complaint = filterData[date];
 
 

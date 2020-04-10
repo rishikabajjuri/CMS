@@ -109,7 +109,7 @@ class Register extends StatelessWidget {
                           .set({
                         'name': nameCtrl.text,
                         'email': emailCtrl.text,
-                        'mobile': mobile
+                        'mobile': mobile,
                       });
                       Prefs.setName(nameCtrl.text);
                       Prefs.setMob(mobile);

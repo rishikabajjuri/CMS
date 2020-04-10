@@ -13,7 +13,6 @@ class AdminCustomCard extends StatelessWidget {
   static final Map<String, Map<String, dynamic>> status = {
     'pending': {'value': 'In Progress', 'color': Colors.deepOrangeAccent},
     'completed': {'value': 'Completed', 'color': Colors.green},
-    'NA': {'value': '', 'color': null},
   };
 
   const AdminCustomCard(

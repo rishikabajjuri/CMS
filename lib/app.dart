@@ -12,20 +12,28 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Widget launchingWidget = Container();
+
   @override
   void initState() {
     super.initState();
     Prefs.getUID().then((value) {
       print(value);
-      if(value == null)
+      if (value == null) {
         launchingWidget = OnBoarding();
-      else
+        setState(() {});
+        return;
+      }
+    });
+    Prefs.getRole().then((role) {
+      if (role == 'user')
+        launchingWidget = UserHomePage();
+       else
         launchingWidget = AdminHomePage();
-      setState(() {
-
-      });
+      setState(() {});
+      return;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     final customColor = Colors.redAccent.withOpacity(0.8);

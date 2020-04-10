@@ -136,6 +136,7 @@ class _UserLoginVerificationState extends State<UserLoginVerification> {
                       } else {
                         Prefs.setName(response[uid]['name']);
                         Prefs.setMob(response[uid]['mobile']);
+//                        Prefs.setRole(response[uid]['role']);
                         UserHomePage.openAndRemoveUntil(context);
                       }
                     } catch (e) {

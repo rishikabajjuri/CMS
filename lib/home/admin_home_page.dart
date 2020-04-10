@@ -160,7 +160,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
   _getCard(data) {
     print(data['users'].length);
     if (data['users'].length == 0) {
-      return Flexible(
+      Flexible(
         child: Center(
             child: Text(
           'No Complaints',
@@ -168,44 +168,44 @@ class _AdminHomePageState extends State<AdminHomePage> {
         )),
       );
     }
-//    if (filterData.length == 0)
-//      return Flexible(
-//          child: Center(
-//              child: Text(
-//        'No Complaints!',
-//        style: TextStyle(fontSize: 20),
-//      )));
     return Flexible(
         child: ListView.builder(
             itemCount: data['users'].length,
             itemBuilder: (context, i) {
               var userId = data['users'].keys.toList()[i];
               print('userId = $userId');
-              return ListView.builder(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  itemCount: data['users'][userId]['complaints'].length,
-                  itemBuilder: (context, j) {
-                    var mobile = data['users'][userId]['mobile'];
-                    var name = data['users'][userId]['name'];
-                    var email = data['users'][userId]['email'];
-                    var date =
-                        data['users'][userId]['complaints'].keys.toList()[j];
-                    var complaint = data['users'][userId]['complaints'][date];
-                    if (complaint['status'] == status[index]) {
-                      if (searchValue.length == 0 ||
-                          complaint['title'].contains(searchValue))
-                        return AdminCustomCard(
-                          complaint: complaint,
-                          date: date,
-                          mobile: mobile,
-                          name: name,
-                          email: email,
-                          userId: userId,
-                        );
-                    }
-                    return Container();
-                  });
+              if (data['users'][userId]['complaints'] != null)
+                return Container(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: ScrollPhysics(),
+                        itemCount: data['users'][userId]['complaints'].length,
+                        itemBuilder: (context, j) {
+                          var mobile = data['users'][userId]['mobile'];
+                          var name = data['users'][userId]['name'];
+                          var email = data['users'][userId]['email'];
+                          var date = data['users'][userId]['complaints']
+                              .keys
+                              .toList()[j];
+                          var complaint =
+                              data['users'][userId]['complaints'][date];
+                          if (complaint['status'] == status[index]) {
+                            if (searchValue.length == 0 ||
+                                complaint['title']
+                                    .toLowerCase()
+                                    .contains(searchValue.toLowerCase()))
+                              return AdminCustomCard(
+                                complaint: complaint,
+                                date: date,
+                                mobile: mobile,
+                                name: name,
+                                email: email,
+                                userId: userId,
+                              );
+                          }
+                          return Container();
+                        }));
+              return Container();
             }));
   }
 }
