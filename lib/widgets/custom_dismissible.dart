@@ -8,7 +8,6 @@ class CustomDismissible extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
       color: Theme.of(context).primaryColor.withOpacity(0.8),
       child: Dismissible(
         confirmDismiss: onDismiss,

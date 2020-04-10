@@ -35,6 +35,7 @@ class _UserHomePageState extends State<UserHomePage> {
         .child('users')
         .child(uid)
         .once();
+    print('uid user = $uid');
     complaints = response.value['complaints'];
     filterData = complaints;
     return response;

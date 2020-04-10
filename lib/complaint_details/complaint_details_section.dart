@@ -6,6 +6,7 @@ import 'package:complaint_managament_system/widgets/loading_widget.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ComplaintDetailsSection extends StatefulWidget {
   final Map complaint;
@@ -15,14 +16,13 @@ class ComplaintDetailsSection extends StatefulWidget {
   final String email;
   final String userId;
 
-  const ComplaintDetailsSection(
-      {Key key,
-      this.complaint,
-      this.date,
-      this.mobile,
-      this.name,
-      this.email,
-      this.userId})
+  const ComplaintDetailsSection({Key key,
+    this.complaint,
+    this.date,
+    this.mobile,
+    this.name,
+    this.email,
+    this.userId})
       : super(key: key);
 
   @override
@@ -62,10 +62,10 @@ class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
                     children: <Widget>[
                       Padding(
                         padding:
-                            const EdgeInsets.only(top: 15, left: 14, bottom: 8),
+                        const EdgeInsets.only(top: 15, left: 14, bottom: 8),
                         child: Text(
                           AdminCustomCard.status[widget.complaint['status']]
-                              ['value'],
+                          ['value'],
                           style: TextStyle(
                               color: AdminCustomCard
                                   .status[widget.complaint['status']]['color'],
@@ -132,33 +132,43 @@ class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
                                     style: TextStyle(fontSize: 15)),
                               ],
                             ),
-                            SizedBox(width: 15),
-                            OutlineButton(
-                              onPressed: () {},
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Text(
-                                'CALL',
-                                style: TextStyle(
-                                    color: Theme.of(context)
+                            SizedBox(width: 13),
+                            Expanded(
+                              child: OutlineButton(
+                                onPressed: () {
+                                  _launchCaller(widget.mobile);
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Text(
+                                  'CALL',
+                                  style: TextStyle(
+                                      color: Theme
+                                          .of(context)
+                                          .primaryColor
+                                          .withOpacity(0.8)),
+                                ),
+                                borderSide: BorderSide(
+                                    color: Theme
+                                        .of(context)
                                         .primaryColor
                                         .withOpacity(0.8)),
                               ),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(0.8)),
                             ),
-                            SizedBox(width: 5),
-                            OutlineButton(
-                              onPressed: () {},
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Text(
-                                'SMS',
-                                style: TextStyle(color: Colors.black54),
+                            SizedBox(width: 6),
+                            Expanded(
+                              child: OutlineButton(
+                                onPressed: () {
+                                  _launchSms(widget.mobile);
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Text(
+                                  'SMS',
+                                  style: TextStyle(color: Colors.black54),
+                                ),
+                                borderSide: BorderSide(color: Colors.black54),
                               ),
-                              borderSide: BorderSide(color: Colors.black54),
                             )
                           ],
                         ),
@@ -176,37 +186,43 @@ class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
                               Icons.email,
                               size: 30,
                             ),
-                            SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  'Email',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(widget.email,
-                                    style: TextStyle(fontSize: 15)),
-                              ],
+                            SizedBox(width: 13),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    'Email',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    height: 3,
+                                  ),
+                                  Text(widget.email,
+                                      style: TextStyle(fontSize: 15)),
+                                ],
+                              ),
                             ),
-                            SizedBox(width: 85),
+//                            SizedBox(width: 85),
                             OutlineButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                _launchEmail(widget.email);
+                              },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20)),
                               child: Text(
                                 'EMAIL',
                                 style: TextStyle(
-                                    color: Theme.of(context)
+                                    color: Theme
+                                        .of(context)
                                         .primaryColor
                                         .withOpacity(0.8)),
                               ),
                               borderSide: BorderSide(
-                                  color: Theme.of(context)
+                                  color: Theme
+                                      .of(context)
                                       .primaryColor
                                       .withOpacity(0.8)),
                             ),
@@ -230,7 +246,7 @@ class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
                     children: <Widget>[
                       Padding(
                         padding:
-                            const EdgeInsets.only(top: 15, left: 14, bottom: 8),
+                        const EdgeInsets.only(top: 15, left: 14, bottom: 8),
                         child: Text(
                           widget.complaint['deptName'],
                           style: TextStyle(
@@ -298,6 +314,35 @@ class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
                           ],
                         ),
                       ),
+                      Divider(height: 15, color: Colors.black),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.location_on,
+                              size: 30,
+                            ),
+                            SizedBox(width: 15),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Location',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                Text(widget.complaint['location'],
+                                    style: TextStyle(fontSize: 15)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -305,51 +350,112 @@ class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
             ),
           ],
         ),
-        FutureBuilder(
-          future: imageFuture,
-          builder: (context, snap) {
-            if (snap.hasError)
-              return Center(
+        SizedBox(
+          height: 20,
+        ),
+        Card(
+          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 13),
+          elevation: 5,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 20, left: 14, bottom: 8),
                 child: Text(
-                  'No Bill Attached!',
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColor.withOpacity(0.8)),
-                ),
-              );
-            if (!snap.hasData) return LoadingWidget();
-            return Hero(
-              tag: 'complaint_image',
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () {
-                    FullScreenImage.open(context, snap.data);
-                  },
-                  child: CachedNetworkImage(
-                    imageUrl: snap.data,
-                    height: 300,
-                    width: double.infinity,
-                    fit: BoxFit.fill,
-                    errorWidget: (context, url, error) => Center(
-                      child: Text(
-                        'Error Fetching Bill!',
-                        style: TextStyle(
-                            color: Theme.of(context)
-                                .primaryColor
-                                .withOpacity(0.8)),
-                      ),
-                    ),
-                    placeholder: (context, url) => LoadingWidget(),
-                  ),
+                  'Complaint Image',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
                 ),
               ),
-            );
-          },
+              Divider(height: 15, color: Colors.black),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: FutureBuilder(
+                  future: imageFuture,
+                  builder: (context, snap) {
+                    if (snap.hasError)
+                      return Center(
+                        child: Text(
+                          'No Bill Attached!',
+                          style: TextStyle(
+                              color: Theme
+                                  .of(context)
+                                  .primaryColor
+                                  .withOpacity(0.8)),
+                        ),
+                      );
+                    if (!snap.hasData) return LoadingWidget();
+                    return Hero(
+                      tag: 'complaint_image',
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            FullScreenImage.open(context, snap.data);
+                          },
+                          child: CachedNetworkImage(
+                            imageUrl: snap.data,
+                            height: 300,
+                            width: double.infinity,
+                            fit: BoxFit.fill,
+                            errorWidget: (context, url, error) =>
+                                Center(
+                                  child: Text(
+                                    'Error Fetching Bill!',
+                                    style: TextStyle(
+                                        color: Theme
+                                            .of(context)
+                                            .primaryColor
+                                            .withOpacity(0.8)),
+                                  ),
+                                ),
+                            placeholder: (context, url) => LoadingWidget(),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
-        Container(
-          height: 50,
+        SizedBox(
+          height: 30,
         )
       ],
     );
+  }
+}
+
+_launchCaller(String mobile) async {
+  final mobileUrl = 'tel:$mobile';
+  if (mobileUrl == 'tel:$mobile') {
+    if (await canLaunch(mobileUrl)) {
+      await launch(mobileUrl);
+    } else {
+      throw 'Could not launch $mobileUrl';
+    }
+  }
+}
+
+_launchSms(String sms) async {
+  final smsUrl = 'sms:$sms';
+  if (smsUrl == 'sms:$sms') {
+    if (await canLaunch(smsUrl)) {
+      await launch(smsUrl);
+    } else {
+      throw 'Could not launch $smsUrl';
+    }
+  }
+}
+
+_launchEmail(String email) async {
+  final emailUrl = 'mailto:$email';
+  if (emailUrl == 'email:$email') {
+    if (await canLaunch(emailUrl)) {
+      await launch(emailUrl);
+    } else {
+      throw 'Could not launch $emailUrl';
+    }
   }
 }

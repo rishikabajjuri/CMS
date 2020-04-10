@@ -109,7 +109,6 @@ class UserLoginPage extends StatelessWidget {
                         if (!formKey.currentState.validate()) return;
                         LoadingWidget.showLoadingDialog(context);
                         final _auth = FirebaseAuth.instance;
-                        print(controller.text);
                         _auth.verifyPhoneNumber(
                             phoneNumber: '+91${controller.text}',
                             timeout: Duration(seconds: 10),
@@ -123,7 +122,6 @@ class UserLoginPage extends StatelessWidget {
                             },
                             codeSent: (verificationCode, [force]) {
                               print('VerificationCode');
-                              print(verificationCode);
                               Navigator.pop(context);
                               UserLoginVerification.open(
                                   context, verificationCode, controller.text);

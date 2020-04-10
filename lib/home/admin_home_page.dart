@@ -28,12 +28,10 @@ class _AdminHomePageState extends State<AdminHomePage> {
   Future<DataSnapshot> future;
   String uid = '';
 
-//  Map complaints;
+  String searchValue = '';
 
   Future<DataSnapshot> getDetails() async {
     var response = await FirebaseDatabase.instance.reference().once();
-//    complaints = response.value['complaints'];
-//    filterData = complaints;
     return response;
   }
 
@@ -43,7 +41,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
     super.initState();
   }
 
-//  Map filterData;
+  Map filterData;
 
   @override
   Widget build(BuildContext context) {
@@ -97,17 +95,10 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       Flexible(
                         child: Card(
                           child: TextField(
-//                            onChanged: (char) {
-//                              filterData = {};
-//                              complaints.forEach((key, value) {
-//                                if (value['title']
-//                                    .toLowerCase()
-//                                    .contains(char.toLowerCase())) {
-//                                  filterData.addAll({key: value});
-//                                }
-//                              });
-//                              setState(() {});
-//                            },
+                            onChanged: (char) {
+                              searchValue = char;
+                              setState(() {});
+                            },
                             decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.white)),
@@ -168,7 +159,15 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
   _getCard(data) {
     print(data['users'].length);
-//    print(index);
+    if (data['users'].length == 0) {
+      return Flexible(
+        child: Center(
+            child: Text(
+          'No Complaints',
+          style: TextStyle(fontSize: 20),
+        )),
+      );
+    }
 //    if (filterData.length == 0)
 //      return Flexible(
 //          child: Center(
@@ -181,7 +180,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
             itemCount: data['users'].length,
             itemBuilder: (context, i) {
               var userId = data['users'].keys.toList()[i];
-              print(userId);
+              print('userId = $userId');
               return ListView.builder(
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
@@ -190,24 +189,20 @@ class _AdminHomePageState extends State<AdminHomePage> {
                     var mobile = data['users'][userId]['mobile'];
                     var name = data['users'][userId]['name'];
                     var email = data['users'][userId]['email'];
-//                    print(data['users'][userId]['complaints'].length);
-//                    print(mobile);
-//                    print(name);
-//                    print(email);
                     var date =
                         data['users'][userId]['complaints'].keys.toList()[j];
                     var complaint = data['users'][userId]['complaints'][date];
-//                    print(complaint);
-//                    print(complaint['status']);
                     if (complaint['status'] == status[index]) {
-                      return AdminCustomCard(
-                        complaint: complaint,
-                        date: date,
-                        mobile: mobile,
-                        name: name,
-                        email: email,
-                        userId: userId,
-                      );
+                      if (searchValue.length == 0 ||
+                          complaint['title'].contains(searchValue))
+                        return AdminCustomCard(
+                          complaint: complaint,
+                          date: date,
+                          mobile: mobile,
+                          name: name,
+                          email: email,
+                          userId: userId,
+                        );
                     }
                     return Container();
                   });

@@ -31,6 +31,7 @@ class _AddComplaintState extends State<AddComplaint> {
   final titleCtrl = TextEditingController();
   final descCtrl = TextEditingController();
   final nameCtrl = TextEditingController();
+  final locationCtrl = TextEditingController();
   File imageFile;
 
   @override
@@ -82,6 +83,7 @@ class _AddComplaintState extends State<AddComplaint> {
                 validator: (value) => value.trim().length == 0
                     ? 'Please select a location'
                     : null,
+                controller: locationCtrl,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
@@ -176,6 +178,7 @@ class _AddComplaintState extends State<AddComplaint> {
                 .set({
               'deptName': nameCtrl.text,
               'title': titleCtrl.text,
+              'location': locationCtrl.text,
               'description': descCtrl.text,
               'status': 'pending',
               'id': id,

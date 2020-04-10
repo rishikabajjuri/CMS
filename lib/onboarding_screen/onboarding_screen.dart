@@ -24,74 +24,51 @@ class _OnBoardingState extends State<OnBoarding> with SingleTickerProviderStateM
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 140),
+              padding: const EdgeInsets.only(top: 45),
               child: Image.asset(
                 'assets/images/person_waving.png',
                 color: Colors.white,
-                height: 220,
+                height: 280,
               ),
             ),
-            //SizedBox(height: 50),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10,bottom: 10,left: 10),
-                child: Hero(
-                  tag: 'user_box',
-                  child: Material(
-                    color: Colors.transparent,
-                    child: RaisedButton(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              bottomLeft: Radius.circular(20))),
-                      color: Colors.white,
-                      onPressed: () {
-                        UserLoginPage.openReplacement(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 13),
-                        child: Text(
-                          'USER',
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor.withOpacity(0.8),
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
+            SizedBox(height: 40),
+            Hero(
+                tag: 'user_box',
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(20),
+                    onTap: () {
+                      UserLoginPage.openReplacement(context);
+                    },
+                    child: Text(
+                      'USER',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
               ),
-            ),
             SizedBox(
               height: 20,
             ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Hero(
-                tag: 'admin_box',
-                child: Material(
-                  color: Colors.transparent,
-                  child: RaisedButton(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            bottomLeft: Radius.circular(20))),
-                    color: Colors.white,
-                    onPressed: () {
-                      AdminLoginPage.openReplacement(context);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 12),
-                      child: Text(
-                        'ADMIN',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor.withOpacity(0.8),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
+            Hero(
+              tag: 'admin_box',
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: () {
+                    AdminLoginPage.openReplacement(context);
+                  },
+                  child: Text(
+                    'ADMIN',
+                    style: TextStyle(
+                      fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

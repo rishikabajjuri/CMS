@@ -15,20 +15,27 @@ class ComplaintDetails extends StatefulWidget {
   final String userId;
 
   const ComplaintDetails(
-      {Key key, this.complaint, this.date, this.mobile, this.name, this.email, this.userId})
+      {Key key,
+      this.complaint,
+      this.date,
+      this.mobile,
+      this.name,
+      this.email,
+      this.userId})
       : super(key: key);
 
-  static open(context, complaint, date, mobile, name, email, userId) => Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => ComplaintDetails(
-                complaint: complaint,
-                date: date,
-                mobile: mobile,
-                name: name,
-                email: email,
-            userId: userId,
-              )));
+  static open(context, complaint, date, mobile, name, email, userId) =>
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ComplaintDetails(
+                    complaint: complaint,
+                    date: date,
+                    mobile: mobile,
+                    name: name,
+                    email: email,
+                    userId: userId,
+                  )));
 
   @override
   _ComplaintDetailsState createState() => _ComplaintDetailsState();
@@ -51,8 +58,12 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                       .reference()
                       .child('users')
                       .child(widget.userId)
-                      .child(widget.complaint['status'])
+                      .child('complaints')
+                      .child(widget.date)
+                      .child('status')
                       .set('completed');
+                  print(widget.userId);
+                  print(widget.complaint['status']);
                   AdminHomePage.openAndRemoveUntil(context);
                   return false;
                 },
