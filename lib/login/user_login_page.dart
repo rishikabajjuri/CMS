@@ -1,4 +1,5 @@
 import 'package:complaint_managament_system/Register/register_page.dart';
+import 'package:complaint_managament_system/data/local/shared_prefs.dart';
 import 'package:complaint_managament_system/home/user_home_page.dart';
 import 'package:complaint_managament_system/login/user_login_verification.dart';
 import 'package:complaint_managament_system/widgets/custom_button.dart';
@@ -106,6 +107,7 @@ class UserLoginPage extends StatelessWidget {
                     ),
                     CustomButton(
                       onTap: () {
+                        Prefs.setRole('user');
                         if (!formKey.currentState.validate()) return;
                         LoadingWidget.showLoadingDialog(context);
                         final _auth = FirebaseAuth.instance;

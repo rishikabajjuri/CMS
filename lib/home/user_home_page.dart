@@ -198,7 +198,6 @@ class _UserHomePageState extends State<UserHomePage> {
               var date;
               var complaint;
               date = filterData.keys.toList()[i];
-              print(date);
               complaint = filterData[date];
 
               if (complaint['status'] == status[index]) {

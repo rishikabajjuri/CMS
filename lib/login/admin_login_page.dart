@@ -1,15 +1,11 @@
-import 'package:complaint_managament_system/Register/register_page.dart';
 import 'package:complaint_managament_system/data/local/shared_prefs.dart';
 import 'package:complaint_managament_system/home/admin_home_page.dart';
-import 'package:complaint_managament_system/home/user_home_page.dart';
-import 'package:complaint_managament_system/login/user_login_verification.dart';
 import 'package:complaint_managament_system/widgets/custom_button.dart';
 import 'package:complaint_managament_system/widgets/loading_widget.dart';
 import 'package:complaint_managament_system/widgets/top_bottom_clipper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:toast/toast.dart';
 
 class AdminLoginPage extends StatefulWidget {
   static openReplacement(context) => Navigator.pushReplacement(

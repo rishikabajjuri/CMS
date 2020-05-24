@@ -2,12 +2,13 @@ import 'dart:io';
 import 'package:complaint_managament_system/data/local/shared_prefs.dart';
 import 'package:complaint_managament_system/home/user_home_page.dart';
 import 'package:complaint_managament_system/widgets/complaint_image.dart';
+import 'package:complaint_managament_system/widgets/google_maps.dart';
+import 'package:complaint_managament_system/widgets/google_maps2.dart';
 import 'package:complaint_managament_system/widgets/loading_widget.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:toast/toast.dart';
 
 class AddComplaint extends StatefulWidget {
@@ -80,20 +81,18 @@ class _AddComplaintState extends State<AddComplaint> {
               height: 20,
             ),
             TextFormField(
-                validator: (value) => value.trim().length == 0
-                    ? 'Please select a location'
-                    : null,
-                controller: locationCtrl,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      GoogleMaps2.open(context);
+                    },
                     icon: Icon(
                       Icons.location_on,
                       color: Colors.red.shade800,
                     ),
                   ),
-                  labelText: 'Where did it happen?',
+                  labelText: '37.4219983°N, 122.084°E',
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(color: Colors.grey.shade600)),
@@ -148,6 +147,7 @@ class _AddComplaintState extends State<AddComplaint> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: "btn2",
         onPressed: () async {
           if (!formKey.currentState.validate()) return;
           if (imageFile == null) {
@@ -162,7 +162,7 @@ class _AddComplaintState extends State<AddComplaint> {
           try {
             var id = FirebaseDatabase.instance.reference().push().key;
             if (id.contains('-')) id = id.replaceFirst('-', '');
-            id = id.substring(0,10);
+            id = id.substring(0, 10);
             print(id);
             final image = await FirebaseStorage.instance
                 .ref()
@@ -184,7 +184,7 @@ class _AddComplaintState extends State<AddComplaint> {
               'description': descCtrl.text,
               'status': 'pending',
               'id': id,
-              'completeDate' :completeDate
+              'completeDate': completeDate
             });
             UserHomePage.openAndRemoveUntil(context);
           } catch (e) {
@@ -192,8 +192,6 @@ class _AddComplaintState extends State<AddComplaint> {
             Navigator.pop(context);
             Toast.show(e.toString(), context, duration: 3);
           }
-
-          print(currentDate);
         },
         label: Text('Save'),
         icon: Icon(Icons.check),

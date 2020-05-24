@@ -76,21 +76,6 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                     .set(completeDate);
                 AdminHomePage.openAndRemoveUntil(context);
                 return false;
-//                      .child('status')
-//                      .set('completed');
-
-//                  FirebaseDatabase.instance
-//                      .reference()
-//                      .child('users')
-//                      .child(widget.userId)
-//                      .child('complaints')
-//                      .child(widget.date)
-//                      .child('status')
-//                      .set('completed');
-//                  print(widget.userId);
-//                  print(widget.complaint['status']);
-//                  AdminHomePage.openAndRemoveUntil(context);
-//                  return false;
               },
             )
             : Container(height: 1, width: 1),

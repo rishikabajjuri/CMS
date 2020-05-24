@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:complaint_managament_system/data/local/shared_prefs.dart';
 import 'package:complaint_managament_system/widgets/admin_custom_card.dart';
 import 'package:complaint_managament_system/widgets/full_screen_image.dart';
+import 'package:complaint_managament_system/widgets/google_maps2.dart';
 import 'package:complaint_managament_system/widgets/loading_widget.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -16,13 +17,14 @@ class ComplaintDetailsSection extends StatefulWidget {
   final String email;
   final String userId;
 
-  const ComplaintDetailsSection({Key key,
-    this.complaint,
-    this.date,
-    this.mobile,
-    this.name,
-    this.email,
-    this.userId})
+  const ComplaintDetailsSection(
+      {Key key,
+      this.complaint,
+      this.date,
+      this.mobile,
+      this.name,
+      this.email,
+      this.userId})
       : super(key: key);
 
   @override
@@ -62,10 +64,10 @@ class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
                     children: <Widget>[
                       Padding(
                         padding:
-                        const EdgeInsets.only(top: 15, left: 14, bottom: 8),
+                            const EdgeInsets.only(top: 15, left: 14, bottom: 8),
                         child: Text(
                           AdminCustomCard.status[widget.complaint['status']]
-                          ['value'],
+                              ['value'],
                           style: TextStyle(
                               color: AdminCustomCard
                                   .status[widget.complaint['status']]['color'],
@@ -143,14 +145,12 @@ class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
                                 child: Text(
                                   'CALL',
                                   style: TextStyle(
-                                      color: Theme
-                                          .of(context)
+                                      color: Theme.of(context)
                                           .primaryColor
                                           .withOpacity(0.8)),
                                 ),
                                 borderSide: BorderSide(
-                                    color: Theme
-                                        .of(context)
+                                    color: Theme.of(context)
                                         .primaryColor
                                         .withOpacity(0.8)),
                               ),
@@ -215,14 +215,12 @@ class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
                               child: Text(
                                 'EMAIL',
                                 style: TextStyle(
-                                    color: Theme
-                                        .of(context)
+                                    color: Theme.of(context)
                                         .primaryColor
                                         .withOpacity(0.8)),
                               ),
                               borderSide: BorderSide(
-                                  color: Theme
-                                      .of(context)
+                                  color: Theme.of(context)
                                       .primaryColor
                                       .withOpacity(0.8)),
                             ),
@@ -246,7 +244,7 @@ class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
                     children: <Widget>[
                       Padding(
                         padding:
-                        const EdgeInsets.only(top: 15, left: 14, bottom: 8),
+                            const EdgeInsets.only(top: 15, left: 14, bottom: 8),
                         child: Text(
                           widget.complaint['deptName'],
                           style: TextStyle(
@@ -377,8 +375,7 @@ class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
                         child: Text(
                           'No Bill Attached!',
                           style: TextStyle(
-                              color: Theme
-                                  .of(context)
+                              color: Theme.of(context)
                                   .primaryColor
                                   .withOpacity(0.8)),
                         ),
@@ -397,17 +394,15 @@ class _ComplaintDetailsSectionState extends State<ComplaintDetailsSection> {
                             height: 300,
                             width: double.infinity,
                             fit: BoxFit.fill,
-                            errorWidget: (context, url, error) =>
-                                Center(
-                                  child: Text(
-                                    'Error Fetching Bill!',
-                                    style: TextStyle(
-                                        color: Theme
-                                            .of(context)
-                                            .primaryColor
-                                            .withOpacity(0.8)),
-                                  ),
-                                ),
+                            errorWidget: (context, url, error) => Center(
+                              child: Text(
+                                'Error Fetching Bill!',
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(0.8)),
+                              ),
+                            ),
                             placeholder: (context, url) => LoadingWidget(),
                           ),
                         ),

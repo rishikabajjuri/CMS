@@ -87,6 +87,10 @@ class Register extends StatelessWidget {
                   ),
                   SizedBox(height: 18),
                   TextFormField(
+                    validator: (value) => value.trim().length == 0
+                        ? 'Please enter your email addess'
+                        : null,
+                    controller: emailCtrl,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                         prefixIcon: Icon(
@@ -96,7 +100,7 @@ class Register extends StatelessWidget {
                         ),
                         labelStyle: TextStyle(
                             color: Colors.grey.shade800, fontSize: 16),
-                        labelText: 'Enter email  (optional)'),
+                        labelText: 'Enter email'),
                   ),
                   SizedBox(height: 35),
                   CustomButton(

@@ -10,8 +10,8 @@ class OnBoarding extends StatefulWidget {
   _OnBoardingState createState() => _OnBoardingState();
 }
 
-class _OnBoardingState extends State<OnBoarding> with SingleTickerProviderStateMixin{
-
+class _OnBoardingState extends State<OnBoarding>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final color2 = Colors.redAccent;
@@ -24,33 +24,32 @@ class _OnBoardingState extends State<OnBoarding> with SingleTickerProviderStateM
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 45),
-              child: Image.asset(
-                'assets/images/person_waving.png',
-                color: Colors.white,
-                height: 280,
-              ),
-            ),
-            SizedBox(height: 40),
+                padding: const EdgeInsets.only(top: 45),
+                child: Icon(
+                  Icons.people_outline,
+                  size: 230,
+                  color: Colors.white,
+                )),
+            SizedBox(height: 45),
             Hero(
-                tag: 'user_box',
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(20),
-                    onTap: () {
-                      UserLoginPage.openReplacement(context);
-                    },
-                    child: Text(
-                      'USER',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
+              tag: 'user_box',
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: () {
+                    UserLoginPage.openReplacement(context);
+                  },
+                  child: Text(
+                    'USER',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
+            ),
             SizedBox(
               height: 20,
             ),
@@ -66,7 +65,7 @@ class _OnBoardingState extends State<OnBoarding> with SingleTickerProviderStateM
                   child: Text(
                     'ADMIN',
                     style: TextStyle(
-                      fontSize: 20,
+                        fontSize: 20,
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
